@@ -1,0 +1,11 @@
+# Compiled binary & release bundles
+/zarf
+/dist/
+*.exe
+*.out
+
+# OS / editor noise
+.DS_Store
+*.swp
+.vscode/
+.idea/

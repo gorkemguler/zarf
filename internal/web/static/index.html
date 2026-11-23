@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zarf — Offline .eml Phishing Autopsy Workbench</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+          <rect x="2" y="5" width="24" height="18" rx="3" stroke="currentColor" stroke-width="2"/>
+          <path d="M3.5 7L14 15.5L24.5 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="21" cy="20" r="4" fill="#ef4444" stroke="#0b0e14" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">ZARF <span class="version-pill" id="tool-version">v0.1.0</span></div>
+        <div class="brand-sub" data-i18n="tagline">Offline .eml Phishing Autopsy &amp; Forensics</div>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <div class="offline-badge" title="Strict CSP · Zero outbound network requests">
+        <span class="pulse-dot"></span>
+        <span data-i18n="offline_badge">100% OFFLINE · 0 NETWORK CALLS</span>
+      </div>
+      <button class="btn btn-ghost" id="btn-paste-modal" data-i18n="paste_raw">Paste Raw .eml</button>
+      <label class="btn btn-primary" for="file-input-top" data-i18n="upload_eml">Upload .eml</label>
+      <input type="file" id="file-input-top" accept=".eml,.rfc822,.txt,.msg" multiple hidden />
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="tr">TR</button>
+      </div>
+      <button class="btn btn-accent btn-sm hidden" id="btn-stop-server" data-i18n="quit_app">Quit</button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="dropzone" id="sidebar-dropzone">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 16V4m0 0l-4 4m4-4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-linecap="round"/>
+        </svg>
+        <div class="dropzone-title" data-i18n="drop_title">Drop .eml files here</div>
+        <div class="dropzone-sub" data-i18n="drop_sub">Local memory only · never uploaded externally</div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-heading">
+          <span data-i18n="session_queue">SESSION QUEUE</span>
+          <span class="count-pill" id="history-count">0</span>
+        </div>
+        <div class="history-list" id="history-list">
+          <div class="empty-hint" data-i18n="no_history">No emails inspected yet.</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-heading">
+          <span data-i18n="demo_specimens">SYNTHETIC DEMO SPECIMENS</span>
+        </div>
+        <div class="sample-list" id="sample-list"></div>
+      </div>
+    </aside>
+
+    <main class="workspace" id="workspace">
+      <!-- Welcome Empty State -->
+      <section class="welcome-panel" id="welcome-panel">
+        <div class="welcome-card">
+          <div class="welcome-badge">SINGLE-BINARY GO · ZERO EXTERNAL DEPENDENCIES</div>
+          <h1 data-i18n="welcome_h1">Dissect suspicious .eml artifacts completely offline.</h1>
+          <p class="welcome-lead" data-i18n="welcome_lead">
+            Drop an .eml file or launch a synthetic phishing specimen to inspect SMTP Received hop graphs,
+            RFC 6376 DKIM body-hash verification, HTML smuggling payloads, Punycode/homoglyph URLs,
+            and static attachment forensics (OOXML macros, external templates, PDF JS, magic-byte mismatches).
+          </p>
+          <div class="welcome-actions">
+            <label class="btn btn-primary btn-lg" for="file-input-top" data-i18n="choose_eml">Choose .eml File(s)</label>
+            <button class="btn btn-ghost btn-lg" id="btn-welcome-paste" data-i18n="paste_raw">Paste Raw .eml</button>
+          </div>
+          <div class="welcome-samples-grid" id="welcome-samples-grid"></div>
+        </div>
+      </section>
+
+      <!-- Active Autopsy View -->
+      <section class="report-view hidden" id="report-view">
+        <!-- Hero Verdict Strip -->
+        <div class="hero-strip">
+          <div class="gauge-wrap">
+            <svg class="score-gauge" viewBox="0 0 120 120" width="108" height="108">
+              <circle class="gauge-track" cx="60" cy="60" r="50" />
+              <circle class="gauge-fill" id="gauge-fill" cx="60" cy="60" r="50" stroke-dasharray="314.16" stroke-dashoffset="314.16" />
+            </svg>
+            <div class="gauge-center">
+              <div class="gauge-number" id="score-number">0</div>
+              <div class="gauge-denom">/ 100</div>
+            </div>
+          </div>
+
+          <div class="hero-meta">
+            <div class="hero-top-row">
+              <span class="verdict-badge" id="verdict-badge">CLEAN</span>
+              <span class="hero-filename mono" id="hero-filename">email.eml</span>
+              <button class="chip-copy mono" id="hero-sha256" title="Copy SHA-256">sha256: —</button>
+            </div>
+            <h2 class="hero-subject" id="hero-subject">—</h2>
+            <div class="hero-envelope">
+              <span><strong data-i18n="lbl_from">From:</strong> <span class="mono" id="hero-from">—</span></span>
+              <span><strong data-i18n="lbl_date">Date:</strong> <span class="mono" id="hero-date">—</span></span>
+              <span><strong data-i18n="lbl_auth">Auth:</strong> <span class="mono" id="hero-auth">—</span></span>
+            </div>
+            <div class="category-bars" id="category-bars"></div>
+          </div>
+
+          <div class="hero-exports">
+            <button class="btn btn-sm btn-ghost" data-export="md">Markdown</button>
+            <button class="btn btn-sm btn-ghost" data-export="stix">STIX 2.1</button>
+            <button class="btn btn-sm btn-ghost" data-export="json">JSON</button>
+            <button class="btn btn-sm btn-accent" data-export="takedown" data-i18n="btn_takedown">Takedown Draft</button>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <nav class="tabs" role="tablist">
+          <button class="tab active" data-tab="overview"><span data-i18n="tab_overview">Findings &amp; Overview</span> <span class="tab-badge" id="badge-findings">0</span></button>
+          <button class="tab" data-tab="hops"><span data-i18n="tab_hops">Hop Graph &amp; Auth</span> <span class="tab-badge" id="badge-hops">0</span></button>
+          <button class="tab" data-tab="body"><span data-i18n="tab_body">Body &amp; Smuggling</span> <span class="tab-badge" id="badge-smug">0</span></button>
+          <button class="tab" data-tab="urls"><span data-i18n="tab_urls">URLs &amp; Homoglyphs</span> <span class="tab-badge" id="badge-urls">0</span></button>
+          <button class="tab" data-tab="attachments"><span data-i18n="tab_attachments">Attachment Lab</span> <span class="tab-badge" id="badge-att">0</span></button>
+          <button class="tab" data-tab="iocs"><span data-i18n="tab_iocs">IOCs &amp; Exports</span></button>
+        </nav>
+
+        <!-- Tab 1: Overview & Findings -->
+        <div class="tab-panel active" id="panel-overview">
+          <div class="filter-bar">
+            <div class="sev-filters" id="sev-filters">
+              <button class="pill active" data-sev="ALL" data-i18n="filter_all">All</button>
+              <button class="pill sev-critical" data-sev="CRITICAL">CRITICAL</button>
+              <button class="pill sev-high" data-sev="HIGH">HIGH</button>
+              <button class="pill sev-medium" data-sev="MEDIUM">MEDIUM</button>
+              <button class="pill sev-low" data-sev="LOW">LOW</button>
+            </div>
+            <div class="summary-line mono" id="score-summary"></div>
+          </div>
+
+          <div class="two-col-wide">
+            <div class="card">
+              <div class="card-header"><h3 data-i18n="hdr_findings">Explainable Risk Findings</h3></div>
+              <div id="findings-list" class="findings-list"></div>
+            </div>
+
+            <div class="side-stack">
+              <div class="card">
+                <div class="card-header"><h3 data-i18n="hdr_actions">Recommended SOC Actions</h3></div>
+                <ul id="recommendations-list" class="rec-list"></ul>
+              </div>
+              <div class="card">
+                <div class="card-header"><h3 data-i18n="hdr_manifest">Evidence Integrity Manifest</h3></div>
+                <dl class="kv-grid mono" id="manifest-kv"></dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Hop Graph & Auth -->
+        <div class="tab-panel" id="panel-hops">
+          <div class="card">
+            <div class="card-header">
+              <h3 data-i18n="hdr_hop_graph">SMTP Received Hop Graph (Origin → Delivery)</h3>
+              <span class="mono muted" id="hop-meta-summary"></span>
+            </div>
+            <div class="hop-graph-container" id="hop-graph-container"></div>
+            <div class="hop-detail-box hidden" id="hop-detail-box"></div>
+          </div>
+
+          <div class="two-col">
+            <div class="card">
+              <div class="card-header"><h3 data-i18n="hdr_identity">Identity Alignment Matrix</h3></div>
+              <div id="identity-matrix"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><h3 data-i18n="hdr_auth_dkim">SPF / DKIM / DMARC &amp; Offline RFC 6376 bh= Check</h3></div>
+              <div id="auth-cards"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Body & HTML Smuggling -->
+        <div class="tab-panel" id="panel-body">
+          <div class="subtabs">
+            <button class="subtab active" data-subtab="preview" data-i18n="sub_preview">Safe Offline Preview</button>
+            <button class="subtab" data-subtab="smuggling" data-i18n="sub_smuggling">Smuggling &amp; Stealth</button>
+            <button class="subtab" data-subtab="rawhtml" data-i18n="sub_rawhtml">Raw HTML</button>
+            <button class="subtab" data-subtab="plaintext" data-i18n="sub_plain">Plain Text</button>
+            <button class="subtab" data-subtab="headers" data-i18n="sub_headers">All Raw Headers</button>
+          </div>
+
+          <div class="subpanel active" id="sub-preview">
+            <div class="sandbox-banner" id="sandbox-banner"></div>
+            <iframe id="safe-preview-frame" class="preview-frame" sandbox="" title="Sandboxed Offline Email Preview"></iframe>
+          </div>
+
+          <div class="subpanel" id="sub-smuggling">
+            <div id="smuggling-content"></div>
+          </div>
+
+          <div class="subpanel" id="sub-rawhtml">
+            <pre class="code-viewer mono" id="raw-html-viewer"></pre>
+          </div>
+
+          <div class="subpanel" id="sub-plaintext">
+            <pre class="code-viewer mono" id="plain-text-viewer"></pre>
+          </div>
+
+          <div class="subpanel" id="sub-headers">
+            <input type="search" id="header-search" class="search-input mono" placeholder="Filter headers (e.g. Received, DKIM, X-Mailer)..." />
+            <div class="table-scroll">
+              <table class="data-table mono" id="all-headers-table">
+                <thead><tr><th>Header</th><th>Value</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: URLs & Homoglyphs -->
+        <div class="tab-panel" id="panel-urls">
+          <div class="card">
+            <div class="card-header">
+              <h3 data-i18n="hdr_urls">Extracted URLs, Homoglyphs &amp; Anchor Diffs</h3>
+              <button class="btn btn-sm btn-ghost" id="btn-copy-urls" data-i18n="copy_defanged_urls">Copy Defanged URLs</button>
+            </div>
+            <div id="urls-container"></div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Attachment Lab -->
+        <div class="tab-panel" id="panel-attachments">
+          <div id="attachments-container"></div>
+        </div>
+
+        <!-- Tab 6: IOCs & Exports -->
+        <div class="tab-panel" id="panel-iocs">
+          <div class="two-col">
+            <div class="card">
+              <div class="card-header">
+                <h3 data-i18n="hdr_defanged_iocs">Defanged IOCs</h3>
+                <button class="btn btn-sm btn-ghost" id="btn-copy-all-iocs" data-i18n="copy_all">Copy All</button>
+              </div>
+              <pre class="code-viewer mono" id="iocs-viewer"></pre>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h3 data-i18n="hdr_takedown">Abuse / Phishing Takedown Draft</h3>
+                <div class="btn-row">
+                  <button class="btn btn-sm btn-ghost" id="btn-takedown-en">EN</button>
+                  <button class="btn btn-sm btn-ghost" id="btn-takedown-tr">TR</button>
+                  <button class="btn btn-sm btn-primary" id="btn-copy-takedown" data-i18n="copy">Copy</button>
+                </div>
+              </div>
+              <pre class="code-viewer mono" id="takedown-viewer"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Paste Raw EML Modal -->
+  <div class="modal-backdrop hidden" id="paste-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-i18n="paste_modal_title">Paste Raw RFC 5322 / .eml Content</h3>
+        <button class="icon-btn" id="btn-close-modal" aria-label="Close">&times;</button>
+      </div>
+      <input type="text" id="paste-filename" class="text-input mono" value="pasted_suspicious.eml" placeholder="Filename (e.g. phishing.eml)" />
+      <textarea id="paste-textarea" class="raw-textarea mono" rows="14" placeholder="Return-Path: <...>&#10;Received: from ...&#10;From: ...&#10;Subject: ..."></textarea>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btn-cancel-modal" data-i18n="cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-submit-paste" data-i18n="run_autopsy">Run Offline Autopsy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

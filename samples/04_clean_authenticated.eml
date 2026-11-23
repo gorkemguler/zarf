@@ -1,0 +1,25 @@
+Return-Path: <soc-bot@secops.example.org>
+Received: from mx1.secops.example.org (198.51.100.10) by mailstore.secops.example.org with ESMTPS (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Mon, 23 Nov 2026 16:00:05 +0300
+Received: from outbound.secops.example.org (198.51.100.4) by mx1.secops.example.org with ESMTPS (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384); Mon, 23 Nov 2026 16:00:02 +0300
+Authentication-Results: mx1.secops.example.org;
+ spf=pass (secops.example.org: domain designates 198.51.100.4 as permitted sender) smtp.mailfrom=soc-bot@secops.example.org;
+ dkim=pass header.d=secops.example.org;
+ dmarc=pass (p=REJECT) header.from=secops.example.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secops.example.org; s=2026q4; h=from:to:subject:date:message-id; bh=0hVAfGPtBH/tAVbiN0JAJ4wpIK5k+9FyhcQsh765y28=; b=SYNTHETIC_DEMO_SIGNATURE_VALID_BH
+From: "SOC Automation Team" <soc-bot@secops.example.org>
+To: gorkem@secops.example.org
+Subject: Weekly Threat Intelligence Briefing — Week 47
+Date: Mon, 23 Nov 2026 16:00:00 +0300
+Message-ID: <20261123160000.week47@secops.example.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Hello Görkem,
+
+The weekly Threat Intelligence briefing notes have been published to the internal repository:
+https://github.com/gorkemguler
+
+All SPF, DKIM, and DMARC checks passed with full alignment and encrypted TLS transit.
+
+Best regards,
+SOC Automation Team

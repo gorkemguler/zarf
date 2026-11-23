@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Zarf
+GenericName=Offline Email Phishing Forensics
+Comment=100% offline .eml phishing autopsy workbench
+Exec=/usr/local/bin/zarf app %F
+Icon=zarf
+Terminal=false
+Categories=Development;Security;Utility;Network;
+MimeType=message/rfc822;
+StartupNotify=false

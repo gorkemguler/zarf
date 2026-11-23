@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+      - name: Verify zero external dependencies
+        run: |
+          if grep -q '^require ' go.mod; then
+            echo "Unexpected external dependency in go.mod"
+            exit 1
+          fi
+      - name: Vet
+        run: go vet ./...
+      - name: Test with race detector
+        run: go test -v -race ./...
+      - name: Build single binary
+        run: go build -trimpath -ldflags="-s -w" -o zarf ./cmd/zarf
+      - name: Smoke test CLI demo
+        run: ./zarf demo --sample clean-authenticated --no-color

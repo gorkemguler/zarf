@@ -1,0 +1,36 @@
+Return-Path: <finance-notify@partner-billing.net>
+Received: from mx.acme-corp.internal (198.51.100.5) by inbox.acme-corp.internal with ESMTPS (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384); Mon, 23 Nov 2026 14:21:09 +0300
+Received: from relay2.partner-billing.net (192.0.2.91) by mx.acme-corp.internal with ESMTPS; Mon, 23 Nov 2026 14:20:55 +0300
+Authentication-Results: mx.acme-corp.internal; spf=pass smtp.mailfrom=partner-billing.net; dmarc=fail header.from=acme-corp.com
+From: "Ahmet Kaya (CFO)" <ahmet.kaya@acme-corp.com>
+Reply-To: ahmet.kaya.executive99@gmail.com
+To: muhasebe@acme-corp.com
+Subject: Urgent Wire Transfer - Updated IBAN & Overdue Invoice #INV-9921
+Date: Fri, 20 Nov 2026 08:15:00 +0300
+Message-ID: <inv-9921@partner-billing.net>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="----=_BEC_03"
+
+------=_BEC_03
+Content-Type: text/plain; charset=UTF-8
+
+Merhaba,
+
+Toplantıdayım, lütfen aşağıdaki vadesi geçmiş fatura için güncel IBAN bilgilerine bugün acil ödeme talimatı (urgent wire transfer) geçelim.
+Onay sonrası bana bu e-postadan (Reply) dekont dönün.
+
+Teşekkürler,
+Ahmet Kaya
+------=_BEC_03
+Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document; name="Updated_IBAN_INV9921.docx"
+Content-Disposition: attachment; filename="Updated_IBAN_INV9921.docx"
+Content-Transfer-Encoding: base64
+
+UEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAATAAAAW0NvbnRlbnRfVHlwZXNdLnhtbFzNTU7DMBBA4atYs0WJAwuEUOIu+DlBOIDlThOL8XjkGSr39qiUVfdP75sPvZA7Y9NceYHHcQKHnOox87bA1/o5vMAhzOtFUF0vxLrAbiav3mvasUQdqyD3QqfaSjQda9u8xPQdN/RP0/TsU2VDtsGuDwjzO57iD5n76IZ8YxuSgnu7hVdrgShCOUXLlf2Zj3fK8C+MDemv0T2LPvRC4MPs14ught8BAFBLBwgnnKBxqAAAANwAAABQSwMEFAAIAAgAAAAAAAAAAAAAAAAAAAAAABEAAAB3b3JkL2RvY3VtZW50LnhtbCzMQQrCMBAF0KsM2Wt1JyFNQcQLWC9gMtSAmSnp1Njby0Q37//N/2745Be8sSyJqTfH/cEAUuCYaOrNfbzuTmbwrtrIYc1Iov3BcdOclaKIv20kT5QU4IyUJoIRF4HLf+W6asWrpTk3fz9dtZHDmpHEfwcAUEsHCIZWuLV0AAAAjwAAAFBLAwQUAAgACAAAAAAAAAAAAAAAAAAAAAAAEwAAAHdvcmQvdmJhUHJvamVjdC5iaW4ANQDK/1NZTlRIRVRJQ19CRU5JR05fVkJBX01BUktFUl9GT1JfU1RBVElDX0RFVEVDVElPTl9PTkxZAwBQSwcI81ShLjwAAAA1AAAAUEsDBBQACAAIAAAAAAAAAAAAAAAAAAAAAAAcAAAAd29yZC9fcmVscy9zZXR0aW5ncy54bWwucmVsc4zQwUrEMBAG4FcJc9/MrgeRpe1eVNiDF6kPMCTTNphkQjKWrk8vooILHjwOw//98HenLUWzcm1Bcg8HuwfD2YkPee7hZXzc3cFp6J45kgbJbQmlmS3F3HpYVMsRsbmFEzUrhfOW4iQ1kTYrdcZC7pVmxpv9/hbrbwOuTXP2PdSzP4AZL4X/Y8s0Bcf34t4SZ/2jAkmV3MJ+5FQiKYMZqc6sX3o7Iur3p+2cz5bXEHdNaWa7Xd7RiyYMeZXg2H4eP/kn8dzDw6ZcM0XAocOrfYaPAQBQSwcIuoUbjNMAAABVAQAAUEsBAhQAFAAIAAgAAAAAACecoHGoAAAA3AAAABMAAAAAAAAAAAAAAAAAAAAAAFtDb250ZW50X1R5cGVzXS54bWxQSwECFAAUAAgACAAAAAAAhla4tXQAAACPAAAAEQAAAAAAAAAAAAAAAADpAAAAd29yZC9kb2N1bWVudC54bWxQSwECFAAUAAgACAAAAAAA81ShLjwAAAA1AAAAEwAAAAAAAAAAAAAAAACcAQAAd29yZC92YmFQcm9qZWN0LmJpblBLAQIUABQACAAIAAAAAAC6hRuM0wAAAFUBAAAcAAAAAAAAAAAAAAAAABkCAAB3b3JkL19yZWxzL3NldHRpbmdzLnhtbC5yZWxzUEsFBgAAAAAEAAQACwEAADYDAAAAAA==
+------=_BEC_03
+Content-Type: application/pdf; name="Invoice_9921.pdf"
+Content-Disposition: attachment; filename="Invoice_9921.pdf"
+Content-Transfer-Encoding: base64
+
+JVBERi0xLjcKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvT3BlbkFjdGlvbiA8PCAvUyAvSmF2YVNjcmlwdCAvSlMgKC8qIHN5bnRoZXRpYyBiZW5pZ24gZGVtbyAqLykgPj4gPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL0Fubm90IC9BIDw8IC9TIC9VUkkgL1VSSSAoaHR0cHM6Ly9kb2N1c2lnbi1pbnZvaWNlLXZlcmlmeS5jbGljay9wYXkpID4+ID4+CmVuZG9iagolJUVPRgo=
+------=_BEC_03--

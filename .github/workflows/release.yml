@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Verify zero external dependencies
+        run: |
+          if grep -q '^require ' go.mod; then
+            echo "Unexpected external dependency in go.mod"
+            exit 1
+          fi
+
+      - name: Run tests
+        run: |
+          go vet ./...
+          go test -race ./...
+
+      - name: Build macOS, Windows, and Linux packages
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          bash scripts/build-release.sh "${VERSION}"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            echo "Release ${GITHUB_REF_NAME} already exists; skipping duplicate creation."
+            exit 0
+          fi
+          gh release create "${GITHUB_REF_NAME}" dist/* \
+            --title "Zarf ${GITHUB_REF_NAME}" \
+            --notes "Cross-platform offline .eml phishing autopsy packages for macOS (Universal DMG + .app + CLI tarballs), Windows (x64/ARM64 zip), and Linux (x64/ARM64 .deb + .tar.gz), with SHA256SUMS.txt."
